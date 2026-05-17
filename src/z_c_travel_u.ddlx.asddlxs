@@ -1,0 +1,139 @@
+ @Metadata.layer: #CORE
+@Search.searchable: true
+@UI.headerInfo: { typeName: 'Travel',
+ typeNamePlural: 'Welcome back!, Here are your Travels...',
+ title: { type: #STANDARD,
+ label: 'Travel',
+  value: 'TravelID' }
+  } 
+    @UI.selectionVariant: [{ qualifier: 'Default', text: 'Default' }]
+    
+    
+annotate entity Z_C_TRAVEL_U
+    with 
+{
+ @UI.facet: [ {
+   id: 'Travel',
+   purpose: #STANDARD ,
+    label: 'Travel',
+    type: #IDENTIFICATION_REFERENCE,
+     position: 10 }, 
+     
+     {
+   id: 'Booking',
+   purpose: #STANDARD ,
+    label: 'Related Bookings',
+    type: #LINEITEM_REFERENCE,
+    targetElement: '_Booking',
+     position: 20 }
+     
+     ]
+
+  @UI : { lineItem: [{ position: 10, iconUrl: 'sap-icon://flight' },
+  { type: #FOR_ACTION, 
+          dataAction: 'acceptTravel',
+          label: 'Accept Travel1',
+          invocationGrouping: #CHANGE_SET},
+          { type: #FOR_ACTION, dataAction: 'rejectTravel', label: 'Reject Travel1' } ],
+          identification: [{ position: 10, iconUrl: 'sap-icon://flight', emphasized: true },
+          { type: #FOR_ACTION, dataAction: 'acceptTravel', label: 'Accept Travel2',emphasized: true, iconUrl: 'sap-icon://cart' },
+          { type: #FOR_ACTION, dataAction: 'rejectTravel', label: 'Reject Travel2', criticalityRepresentation: #WITH_ICON }]
+         }
+  @Search.defaultSearchElement: true
+  TravelID;
+  @UI : { lineItem: [{ position: 20, label: 'Agency ID' }],
+          selectionField: [{ position: 20 }],
+          identification: [{ position: 20 }]
+        }
+  @Search.defaultSearchElement: true
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/DMO/I_AGENCY', element: 'AgencyID' } }]
+//  @Consumption.filter.mandatory: true
+  AgencyID;
+  //   AgencyName;
+  @UI : { lineItem: [{ position: 30, label: 'Customer ID', emphasized: true, iconUrl: '' }], //type: #WITH_INTENT_BASED_NAVIGATION
+          selectionField: [{ position: 30 }],
+          identification: [{ position: 30 }]
+     }
+  @Search.defaultSearchElement: true
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/DMO/I_CUSTOMER', element: 'CustomerID' } }]
+//  @Consumption.semanticObject: 'Customer'
+
+  CustomerID;
+  //   CustomerName;
+  @UI : { lineItem: [{ position: 40, label: 'Begin Date' }],
+          identification: [{ position: 40 }]
+          }
+  BeginDate;
+  @UI : { lineItem: [{ position: 50, label: 'End Date' }],
+          identification: [{ position: 50 }]
+        }
+  EndDate;
+  @UI.identification: [{ position: 55 }]
+  
+  BookingFee;
+  @UI : { lineItem: [{ position: 60, label: 'Total Price'}],
+          identification: [{ position: 60, hidden: true}]
+        }
+        
+
+//@UI.dataPoint: { 
+//    title: 'Total Spent', 
+//    visualization: #PROGRESS, 
+//    targetValue: 5000  // Example static budget
+//}     
+@UI.dataPoint: {
+    qualifier: 'PriceDataPoint', // <--- This is the "ID"
+    title: 'Total Expenditure',
+    visualization: #PROGRESS,
+    targetValue: 10000
+}
+
+
+@UI.facet: [
+    // Existing facets...
+    {
+        id: 'PriceDataPoint',
+        purpose: #HEADER,
+        type: #DATAPOINT_REFERENCE,
+        targetQualifier: 'PriceDataPoint', // Points to the DataPoint above
+        position: 10
+    }
+  ]
+        
+  TotalPrice;
+  @Consumption.valueHelpDefinition: [{ entity: { name: 'I_CURRENCY', element: 'Currency' } }]
+  CurrencyCode;
+  @UI : { 
+  lineItem: [{ 
+  position: 70,
+   label: 'Status',
+    importance: #HIGH ,
+     criticality : 'StatusCriticality',
+     criticalityRepresentation: #WITH_ICON 
+             }],
+          selectionField: [{ position: 70 }],
+          identification: [{ position: 70 }],
+          textArrangement: #TEXT_LAST
+        }
+  @UI.dataPoint : {  title : 'Travel Status' , criticality : 'StatusCriticality' }
+  @Search.defaultSearchElement: true
+@Consumption.valueHelpDefinition: [{
+  entity: {
+    name: '/DMO/I_Travel_Status_VH',
+    element: 'TravelStatus'
+  }
+}]
+  Status;
+  @UI.hidden: true
+  StatusCriticality;
+  //   OverallStatusText;
+//  @UI.identification: [{ position: 65 }]
+//  description;
+  //   created_by;
+  //   created_at;
+  //   last_changed_by;
+  @UI.hidden: true
+  LastChangedAt;
+
+    
+} 

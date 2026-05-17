@@ -1,0 +1,58 @@
+@Metadata.layer: #CORE
+@Search.searchable: true
+@UI.headerInfo: { typeName: 'BookingSuppl',
+ typeNamePlural: 'BookingSuppls',
+ title: { type: #STANDARD,
+ label: 'Please Review Individual Supplement',
+  value: 'booking_supplement_id'
+  } }
+
+annotate entity Z_C_BOOKINGSUPPL_M with
+{
+  @UI.facet: [ {
+   id: 'BookingSuppl',
+   purpose: #STANDARD ,
+    label: 'Please Review Individual Supplement',
+    type: #IDENTIFICATION_REFERENCE,
+     position: 10 }]
+  @Search.defaultSearchElement: true
+  travel_id;
+  @Search.defaultSearchElement: true
+  booking_id;
+  @UI : { lineItem: [{ position: 10 }],
+          identification: [{ position: 10 }]
+       }
+  booking_supplement_id;
+  @UI : { lineItem: [{ position: 20 }],
+          identification: [{ position: 20 }]
+       }
+  @Consumption.valueHelpDefinition: [{ entity:
+                                               { name: '/DMO/I_SUPPLEMENT',
+                                                 element: 'SupplementID'
+                                               },
+                                       additionalBinding: [ {
+                                                             localElement: 'supplement_id',
+                                                             element: 'SupplementID'
+                                                            },
+                                                            {
+                                                             localElement: 'price',
+                                                             element: 'Price'
+                                                            },
+                                                            {
+                                                             localElement: 'currency_code',
+                                                             element: 'CurrencyCode'
+                                                            }
+                                                         ]
+
+  }]
+  supplement_id;
+  @UI : { lineItem: [{ position: 30 }],
+          identification: [{ position: 30 }]
+       }
+  price;
+  @Consumption.valueHelpDefinition: [{ entity: { name: 'I_CURRENCY', element: 'Currency' } }]
+  currency_code;
+  @UI.hidden: true
+    last_changed_at;
+
+}

@@ -1,0 +1,91 @@
+@Metadata.layer: #CORE
+@Search.searchable: true
+@UI.headerInfo: { typeName: 'Travel',
+ typeNamePlural: 'Welcome back!, Here are your Travels...',
+ title: { type: #STANDARD,
+ label: 'Travel',
+  value: 'travel_id'
+  } }
+
+annotate view Z_C_TRAVEL_M with
+{
+  @UI.facet: [ {
+   id: 'Travel',
+   purpose: #STANDARD ,
+    label: 'Travel',
+    type: #IDENTIFICATION_REFERENCE,
+     position: 10 }, 
+     
+     {
+   id: 'Booking',
+   purpose: #STANDARD ,
+    label: 'Related Bookings',
+    type: #LINEITEM_REFERENCE,
+    targetElement: '_Booking',
+     position: 20 }
+     
+     ]
+
+  @UI : { lineItem: [{ position: 10 }],
+          identification: [{ position: 10 }]
+         }
+  @Search.defaultSearchElement: true
+  travel_id;
+  @UI : { lineItem: [{ position: 20, label: 'Agency ID' }],
+          selectionField: [{ position: 20 }],
+          identification: [{ position: 20 }]
+        }
+  @Search.defaultSearchElement: true
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/DMO/I_AGENCY', element: 'AgencyID' } }]
+  agency_id;
+  //   AgencyName;
+  @UI : { lineItem: [{ position: 30, label: 'Customer ID' }],
+          selectionField: [{ position: 30 }],
+          identification: [{ position: 30 }]
+     }
+  @Search.defaultSearchElement: true
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/DMO/I_CUSTOMER', element: 'CustomerID' } }]
+  customer_id;
+  //   CustomerName;
+  @UI : { lineItem: [{ position: 40, label: 'Begin Date' }],
+          identification: [{ position: 40 }]
+          }
+  begin_date;
+  @UI : { lineItem: [{ position: 50, label: 'End Date' }],
+          identification: [{ position: 50 }]
+        }
+  end_date;
+  @UI.identification: [{ position: 55 }]
+  booking_fee;
+  @UI : { lineItem: [{ position: 60, label: 'Total Price' }],
+          identification: [{ position: 60 }]
+        }
+  total_price;
+  @Consumption.valueHelpDefinition: [{ entity: { name: 'I_CURRENCY', element: 'Currency' } }]
+  currency_code;
+  @UI : { lineItem: [{ position: 70,
+   label: 'Status',
+    importance: #HIGH ,
+     criticality : 'StatusCriticality',
+     criticalityRepresentation: #WITH_ICON }],
+          selectionField: [{ position: 70 }],
+          identification: [{ position: 70 }],
+          textArrangement: #TEXT_ONLY
+        }
+  @UI.dataPoint : {  title : 'Travel Status' , criticality : 'StatusCriticality' }
+  @Search.defaultSearchElement: true
+  @Consumption.valueHelpDefinition: [{ entity: { name: '/DMO/I_Overall_Status_VH', element: 'OverallStatus' } }]
+  overall_status;
+  @UI.hidden: true
+  StatusCriticality;
+  //   OverallStatusText;
+  @UI.identification: [{ position: 65 }]
+  description;
+  //   created_by;
+  //   created_at;
+  //   last_changed_by;
+  @UI.hidden: true
+  last_changed_at;
+
+
+}

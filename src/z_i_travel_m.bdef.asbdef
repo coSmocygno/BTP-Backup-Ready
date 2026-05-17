@@ -1,0 +1,96 @@
+managed;
+strict ( 2 );
+
+define behavior for Z_I_TRAVEL_M //alias <alias_name>
+implementation in class zbp_i_travel unique
+persistent table ztravel_cosmo
+lock master
+authorization master ( none )
+etag master last_changed_at
+early numbering
+{
+
+  field ( readonly ) travel_id;
+
+  create ( authorization : global );
+  update;
+  delete;
+  association _Booking { create; }
+
+  mapping for ztravel_cosmo
+  {
+    travel_id = travel_id;
+    agency_id = agency_id;
+    customer_id = customer_id;
+    begin_date = begin_date;
+    end_date = end_date;
+    booking_fee = booking_fee;
+    total_price = total_price;
+    currency_code = currency_code;
+    description = description;
+    overall_status = overall_status;
+    created_by = created_by;
+    created_at = created_at;
+    last_changed_by = last_changed_by;
+    last_changed_at = last_changed_at;
+
+  }
+}
+
+define behavior for Z_I_BOOKING_M //alias <alias_name>
+implementation in class zbp_i_booking unique
+persistent table zbooking_cosmo
+lock dependent by _Travel
+authorization dependent by _Travel
+etag master last_changed_at
+early numbering
+{
+  update;
+  delete;
+  field ( readonly ) travel_id, booking_id;
+  association _Travel;
+  association _BookSupplement { create; }
+
+  mapping for zbooking_cosmo
+  {
+    travel_id = travel_id;
+    booking_id = booking_id;
+    booking_date = booking_date;
+    customer_id = customer_id;
+    carrier_id = carrier_id;
+    connection_id = connection_id;
+    flight_date = flight_date;
+    flight_price = flight_price;
+    currency_code = currency_code;
+    booking_status = booking_status;
+    last_changed_at = last_changed_at;
+
+  }
+}
+
+define behavior for Z_I_BOOKSUPPL_M //alias <alias_name>
+implementation in class zbp_i_booksuppl unique
+persistent table zbooksuppl_cosmo
+lock dependent by _Travel
+authorization dependent by _Travel
+etag master last_changed_at
+early numbering
+{
+  update;
+  delete;
+  field ( readonly ) travel_id, booking_id, booking_supplement_id;
+  association _Travel;
+  association _Booking;
+
+  mapping for zbooksuppl_cosmo
+  {
+    travel_id = travel_id;
+    booking_id = booking_id;
+    booking_supplement_id = booking_supplement_id;
+    supplement_id = supplement_id;
+    price = price;
+    currency_code = currency_code;
+    last_changed_at = last_changed_at;
+
+  }
+}
